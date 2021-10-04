@@ -1,0 +1,11 @@
+# folders
+venv/
+pycursos/__pycache__/
+users/__pycache__/
+users/migrations/__pycache__/
+
+# files
+db.sqlite3
+pycursos/settings_local.py
+
+
