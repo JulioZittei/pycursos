@@ -1,0 +1,60 @@
+{% extends 'base.html'%}
+
+{% block 'titulo'%}
+  PyCursos | Cadastro
+{% endblock%}
+
+{% block 'body' %}
+<div class="container">
+    
+  <div class="row">
+      <div class="col-md-3">
+
+      </div>
+      <div class="col-md">
+          <br>
+          {% if success == '1' %}
+            <div class="alert alert-success" role="alert">
+              Cadastro realizado com sucesso!
+            </div>
+          {% endif %}
+          <h1>Cadastre-se</h1>
+          <hr>
+          <form method="POST" action="{% url 'validate_registry' %}">{% csrf_token %}
+              <label>Digite seu nome:</label>
+              <input class="form-control" type="text" placeholder="Nome..." name = "name">
+              <br>
+              <label>Digite seu Email:</label>
+              <input class="form-control" type="text" placeholder="E-mail" name = "email">
+              <br>
+              <label>Digite seu senha:</label>
+              <input class="form-control" type="password" placeholder="Senha" name = "password">
+              <br>
+              {% if required_fields == '1' %}
+                <div class="alert alert-danger" role="alert">
+                  Os campos Nome, E-mail e Senha são obrigatórios!
+                </div>
+              {% endif %}
+              {% if invalid_password == '1' %}
+                <div class="alert alert-danger" role="alert">
+                  A senha deve conter no mínimo 8 e no máximo 12 caracteres!
+                </div>
+              {% endif %}
+              {% if user_exists == '1' %}
+                <div class="alert alert-danger" role="alert">
+                  Já existe um usuário com este e-mail cadastrado!
+                </div>
+              {% endif %}
+              <input class="btn btn-success btn-lg" type="submit">
+              <a href="/auth/login" class="btn btn-info btn-lg">Logar</a>
+          </form>
+
+      </div>
+          
+      <div class="col-md-3">
+      
+      </div>
+  </div>
+
+</div>
+{% endblock %}
