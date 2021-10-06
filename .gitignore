@@ -1,8 +1,11 @@
 # folders
 venv/
+media/
 pycursos/__pycache__/
 users/__pycache__/
 users/migrations/__pycache__/
+courses/__pycache__/
+courses/migrations/__pycache__/
 
 # files
 .DS_Store
