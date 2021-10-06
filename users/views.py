@@ -8,6 +8,8 @@ import hashlib
 
 
 def register(request):
+    if request.session.get('LOGGED_USER'):
+        return redirect('/home')
     required_fields = request.GET.get('required_fields')
     user_exists = request.GET.get('user_exists')
     invalid_password = request.GET.get('invalid_password')
@@ -21,7 +23,18 @@ def register(request):
 
 
 def login(request):
-    return render(request, 'login.html')
+    if request.session.get('LOGGED_USER'):
+        return redirect('/home')
+    invalid_login = request.GET.get('invalid_login')
+    unauthorized_access = request.GET.get('unauthorized_access')
+    return render(request, 'login.html', {'invalid_login': invalid_login, 'unauthorized_access': unauthorized_access})
+
+
+def logout(request):
+    if request.session.get('LOGGED_USER'):
+        request.session.flush()
+
+    return redirect('/auth/login')
 
 
 def validate_registry(request):
@@ -50,7 +63,19 @@ def validate_registry(request):
         password = hashlib.sha256(password.encode()).hexdigest()
         user = User(name=name, email=email, password=password)
         user.save()
+        return redirect('/auth/register?success=1')
     except:
         return HttpResponse('500 - Internal Server Error')
 
-    return redirect('/auth/register?success=1')
+
+def validate_login(request):
+    email = request.POST.get('email')
+    password = request.POST.get('password')
+    password = hashlib.sha256(password.encode()).hexdigest()
+    users = User.objects.filter(email=email).filter(password=password)
+
+    if len(users) == 0:
+        return redirect('/auth/login?invalid_login=1')
+    elif len(users) > 0:
+        request.session['LOGGED_USER'] = users[0].id
+        return redirect('/home')

@@ -5,7 +5,11 @@ users/__pycache__/
 users/migrations/__pycache__/
 
 # files
+.DS_Store
 db.sqlite3
+users/.DS_Store
 pycursos/settings_local.py
+ 
+
 
 

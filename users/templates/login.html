@@ -13,9 +13,19 @@
       </div>
       <div class="col-md">
           <br>
+          {% if invalid_login == '1' %}
+            <div class="alert alert-danger" role="alert">
+              Usuário e/ou senha inválidos!
+            </div>
+          {% endif %}
+          {% if unauthorized_access == '1' %}
+            <div class="alert alert-danger" role="alert">
+              Faça login antes de acessar a plataforma!
+            </div>
+          {% endif %}
           <h1>Login</h1>
           <hr>
-          <form method="POST" action="#">
+          <form method="POST" action="{% url 'validate_login'%}">{% csrf_token %}
               <label>Digite seu Email:</label>
               <input class="form-control" type="text" placeholder="E-mail" name = "email">
               <br>
